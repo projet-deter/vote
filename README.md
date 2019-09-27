@@ -16,3 +16,16 @@
 <li>JWT</li>
 <li>Postgres</li>
 <li>Gorilla Mux (For HTTP routing and URL matcher)</li>
+<p>If you have never installed them before, you can run the following commands:</p>
+<li>go get github.com/badoux/checkmail</li>
+<li>go get github.com/jinzhu/gorm</li>
+<li>go get golang.org/x/crypto/bcrypt</li>
+<li>go get github.com/dgrijalva/jwt-go</li>
+<li>go get github.com/gorilla/mux</li>
+<li>go get github.com/jinzhu/gorm/dialects/postgres</li>
+<li>go get github.com/joho/godotenv</li>
+<li>go get gopkg.in/go-playground/assert.v1</li>
+
+
+
+
