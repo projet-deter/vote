@@ -3,6 +3,9 @@ package controllers
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
+	"log"
+	"strconv"
 	"net/http"
 
 	"github.com/m2fof/vote/api/auth"
@@ -37,6 +40,7 @@ func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusUnprocessableEntity, formattedError)
 		return
 	}
+
 	responses.JSON(w, http.StatusOK, token)
 }
 
@@ -54,5 +58,13 @@ func (server *Server) SignIn(email, password string) (string, error) {
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
 		return "", err
 	}
+
+	os.Setenv("currentUserFirst_name", user.First_name)
+	os.Setenv("currentUserAccessLevel", strconv.FormatInt(int64(user.AccessLevel), 10))
+	log.Println("New Login:")
+	log.Println(os.Getenv("currentUserFirst_name"))
+	log.Println(os.Getenv("currentUserAccessLevel"))
+
+
 	return auth.CreateToken(user.ID)
 }
