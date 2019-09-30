@@ -12,7 +12,7 @@ import (
 )
 
 type User struct {
-	ID         uint32 `gorm:"primary_key;auto_increment" json:"id"`
+	ID         uint32 `gorm:"primary_key;auto_increment" json:"-"`
 	First_name string `gorm:"size:255;not null;unique" json:"first_name"`
 	Last_name  string `gorm:"size:255;not null;unique" json:"last_name"`
 	Email      string `gorm:"size:100;not null;unique" json:"email"`
@@ -49,12 +49,6 @@ func (u *User) Prepare() {
 func (u *User) Validate(action string) error {
 	switch strings.ToLower(action) {
 	case "update":
-		if u.First_name == "" {
-			return errors.New("Required First_name")
-		}
-		if u.Last_name == "" {
-			return errors.New("Required Last_name")
-		}
 		if u.Password == "" {
 			return errors.New("Required Password")
 		}
