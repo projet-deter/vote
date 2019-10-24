@@ -22,5 +22,5 @@ func (s *Server) initializeRoutes() {
 	s.Router.HandleFunc("/votes", middlewares.SetMiddlewareJSON(s.GetVotes)).Methods("GET")
 	s.Router.HandleFunc("/votes/{id}", middlewares.SetMiddlewareJSON(s.GetVote)).Methods("GET")
 	s.Router.HandleFunc("/votes/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateVote))).Methods("PUT")
-	s.Router.HandleFunc("/votes/{id}", middlewares.SetMiddlewareAuthentication(s.DeletePost)).Methods("DELETE")
+	s.Router.HandleFunc("/votes/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteVote)).Methods("DELETE")
 }

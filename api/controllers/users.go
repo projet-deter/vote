@@ -15,7 +15,22 @@ import (
 	"github.com/m2fof/vote/api/utils/formaterror"
 )
 
+var currentUserId = 0
+var currentUserAccessLevel = 0
+var currentUserFirst_name = ""
+var currentUserLast_name = ""
+
+func init() {
+	//globalSessions, _ = session.NewManager("memory", `{"cookieName":"gosessionid", "enableSetCookie,omitempty": true, "gclifetime":3600, "maxLifetime": 3600, "secure": false, "sessionIDHashFunc": "sha1", "sessionIDHashKey": "", "cookieLifeTime": 3600, "providerConfig": ""}`)
+	//go globalSessions.GC()
+}
+
 func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
+	/*log.Println(currentUserId)
+	log.Println(currentUserFirst_name)
+	log.Println(currentUserLast_name)
+	log.Println(currentUserAccessLevel)*/
+	//if currentUserAccessLevel == 1 {
 
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -28,6 +43,7 @@ func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.Prepare()
+
 	err = user.Validate("")
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
@@ -45,6 +61,10 @@ func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI, userCreated.ID))
 	responses.JSON(w, http.StatusCreated, userCreated)
 }
+
+/*else {
+	log.Println("You don't have access right to perform this action:")
+}*/
 
 func (server *Server) GetUsers(w http.ResponseWriter, r *http.Request) {
 

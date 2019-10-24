@@ -155,7 +155,7 @@ func (server *Server) UpdateVote(w http.ResponseWriter, r *http.Request) {
 	responses.JSON(w, http.StatusOK, postUpdated)
 }
 
-func (server *Server) DeletePost(w http.ResponseWriter, r *http.Request) {
+func (server *Server) DeleteVote(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 

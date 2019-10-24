@@ -5,19 +5,25 @@ import (
 	"html"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/badoux/checkmail"
+	guuid "github.com/google/uuid"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID         uint32 `gorm:"primary_key;auto_increment" json:"-"`
-	First_name string `gorm:"size:255;not null;unique" json:"first_name"`
-	Last_name  string `gorm:"size:255;not null;unique" json:"last_name"`
-	Email      string `gorm:"size:100;not null;unique" json:"email"`
-	Password   string `gorm:"size:100;not null;" json:"password"`
-	Birth_date string `gorm:"size:100;not null;unique" json:"birth_date"`
+	ID          uint32    `gorm:"primary_key;auto_increment" json:"id"`
+	Uuid        string    `gorm:"size:255;unique" json:"uuid"`
+	AccessLevel int       `gorm: json:"accesslevel"`
+	First_name  string    `gorm:"size:255;not null;" json:"first_name"`
+	Last_name   string    `gorm:"size:255;not null;" json:"last_name"`
+	Email       string    `gorm:"size:100;not null;unique" json:"email"`
+	Password    string    `gorm:"size:100;not null;" json:"password"`
+	Birth_date  string    `gorm:"size:100;not null;" json:"birth_date"`
+	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 func Hash(password string) ([]byte, error) {
@@ -38,17 +44,29 @@ func (u *User) BeforeSave() error {
 }
 
 func (u *User) Prepare() {
+	id := guuid.New()
+
 	u.ID = 0
+	u.Uuid = id.String()
+	u.AccessLevel = 0
 	u.First_name = html.EscapeString(strings.TrimSpace(u.First_name))
 	u.Last_name = html.EscapeString(strings.TrimSpace(u.Last_name))
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.Birth_date = html.EscapeString(strings.TrimSpace(u.Birth_date))
+	u.CreatedAt = time.Now()
+	u.UpdatedAt = time.Now()
 
 }
 
 func (u *User) Validate(action string) error {
 	switch strings.ToLower(action) {
 	case "update":
+		/*if u.First_name == "" {
+			return errors.New("Required First_name")
+		}
+		if u.Last_name == "" {
+			return errors.New("Required Last_name")
+		}*/
 		if u.Password == "" {
 			return errors.New("Required Password")
 		}

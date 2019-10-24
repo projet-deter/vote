@@ -9,18 +9,22 @@ import (
 
 var users = []models.User{
 	models.User{
-		First_name: "Steven ",
-		Last_name:  " victor",
-		Email:      "steven@gmail.com",
-		Password:   "password",
-		Birth_date: "11/05/2000",
+		Uuid:        "69cda7b3-9a67-47ce-beac-16ce1dc177e0",
+		AccessLevel: 1,
+		First_name:  "Steven ",
+		Last_name:   " victor",
+		Email:       "steven@gmail.com",
+		Password:    "password",
+		Birth_date:  "11/05/2000",
 	},
 	models.User{
-		First_name: "Martin ",
-		Last_name:  "Luther",
-		Email:      "luther@gmail.com",
-		Password:   "password",
-		Birth_date: "24/04/2005",
+		Uuid:        "33ert7b3-9a67-47ce-cgrt-16ce1dc177e0",
+		AccessLevel: 0,
+		First_name:  "Martin ",
+		Last_name:   "Luther",
+		Email:       "luther@gmail.com",
+		Password:    "password",
+		Birth_date:  "24/04/2005",
 	},
 }
 
@@ -60,7 +64,7 @@ func Load(db *gorm.DB) {
 
 		err = db.Debug().Model(&models.Vote{}).Create(&votes[i]).Error
 		if err != nil {
-			log.Fatalf("cannot seed posts table: %v", err)
+			log.Fatalf("cannot seed votes table: %v", err)
 		}
 	}
 }
