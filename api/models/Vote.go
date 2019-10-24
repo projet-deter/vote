@@ -116,7 +116,7 @@ func (p *Vote) DeleteVote(db *gorm.DB, pid uint64, uid uint32) (int64, error) {
 
 	if db.Error != nil {
 		if gorm.IsRecordNotFoundError(db.Error) {
-			return 0, errors.New("Post not found")
+			return 0, errors.New("Vote not found")
 		}
 		return 0, db.Error
 	}
