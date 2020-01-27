@@ -16,7 +16,7 @@ import (
 )
 
 var currentUserId = 0
-var currentUserAccessLevel = 0
+var currentUserAccess_level = 0
 var currentUserFirst_name = ""
 var currentUserLast_name = ""
 
@@ -26,12 +26,6 @@ func init() {
 }
 
 func (server *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
-	/*log.Println(currentUserId)
-	log.Println(currentUserFirst_name)
-	log.Println(currentUserLast_name)
-	log.Println(currentUserAccessLevel)*/
-	//if currentUserAccessLevel == 1 {
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)

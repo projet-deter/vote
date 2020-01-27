@@ -14,16 +14,16 @@ import (
 )
 
 type User struct {
-	ID          uint32    `gorm:"primary_key;auto_increment" json:"id"`
-	Uuid        string    `gorm:"size:255;unique" json:"uuid"`
-	AccessLevel int       `gorm: json:"accesslevel"`
-	First_name  string    `gorm:"size:255;not null;" json:"first_name"`
-	Last_name   string    `gorm:"size:255;not null;" json:"last_name"`
-	Email       string    `gorm:"size:100;not null;unique" json:"email"`
-	Password    string    `gorm:"size:100;not null;" json:"password"`
-	Birth_date  string    `gorm:"size:100;not null;" json:"birth_date"`
-	CreatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	ID           uint32    `gorm:"primary_key;auto_increment" json:"id"`
+	Uuid         string    `gorm:"size:255;unique" json:"uuid"`
+	Access_level int       `gorm: json:"access_level"`
+	First_name   string    `gorm:"size:255;not null;" json:"first_name"`
+	Last_name    string    `gorm:"size:255;not null;" json:"last_name"`
+	Email        string    `gorm:"size:100;not null;unique" json:"email"`
+	Password     string    `gorm:"size:100;not null;" json:"password"`
+	Birth_date   string    `gorm:"size:100;not null;" json:"birth_date"`
+	CreatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt    time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
 func Hash(password string) ([]byte, error) {
@@ -48,14 +48,13 @@ func (u *User) Prepare() {
 
 	u.ID = 0
 	u.Uuid = id.String()
-	u.AccessLevel = 0
+	u.Access_level = 0
 	u.First_name = html.EscapeString(strings.TrimSpace(u.First_name))
 	u.Last_name = html.EscapeString(strings.TrimSpace(u.Last_name))
 	u.Email = html.EscapeString(strings.TrimSpace(u.Email))
 	u.Birth_date = html.EscapeString(strings.TrimSpace(u.Birth_date))
 	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
-
 }
 
 func (u *User) Validate(action string) error {
@@ -76,8 +75,8 @@ func (u *User) Validate(action string) error {
 		if err := checkmail.ValidateFormat(u.Email); err != nil {
 			return errors.New("Invalid Email")
 		}
-
 		return nil
+
 	case "login":
 		if u.Password == "" {
 			return errors.New("Required Password")

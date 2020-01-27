@@ -9,32 +9,32 @@ import (
 
 var users = []models.User{
 	models.User{
-		Uuid:        "69cda7b3-9a67-47ce-beac-16ce1dc177e0",
-		AccessLevel: 1,
-		First_name:  "Steven ",
-		Last_name:   " victor",
-		Email:       "steven@gmail.com",
-		Password:    "password",
-		Birth_date:  "11/05/2000",
+		Uuid:         "69cda7b3-9a67-47ce-beac-16ce1dc177e0",
+		Access_level: 1,
+		First_name:   "Laura",
+		Last_name:    "Dupre",
+		Email:        "laura@gmail.com",
+		Password:     "password",
+		Birth_date:   "11/05/1990",
 	},
 	models.User{
-		Uuid:        "33ert7b3-9a67-47ce-cgrt-16ce1dc177e0",
-		AccessLevel: 0,
-		First_name:  "Martin ",
-		Last_name:   "Luther",
-		Email:       "luther@gmail.com",
-		Password:    "password",
-		Birth_date:  "24/04/2005",
+		Uuid:         "33ert7b3-9a67-47ce-cgrt-16ce1dc177e0",
+		Access_level: 0,
+		First_name:   "Dylan",
+		Last_name:    "Lacours",
+		Email:        "dylan@gmail.com",
+		Password:     "password",
+		Birth_date:   "24/04/1980",
 	},
 }
 
 var votes = []models.Vote{
 	models.Vote{
-		Title: "Title 1",
+		Title: "Vote 1",
 		Desc:  "Hello world 1",
 	},
 	models.Vote{
-		Title: "Title 2",
+		Title: "Vote 2",
 		Desc:  "Hello world 2",
 	},
 }

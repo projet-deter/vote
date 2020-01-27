@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 
-	
 	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres database driver
 
 	"github.com/m2fof/vote/api/models"
@@ -35,13 +35,15 @@ func (server *Server) Initialize(Dbdriver, DbUser, DbPassword, DbPort, DbHost, D
 	}
 
 	server.DB.Debug().AutoMigrate(&models.User{}, &models.Vote{}) //database migration
-
 	server.Router = mux.NewRouter()
-
 	server.initializeRoutes()
 }
 
 func (server *Server) Run(addr string) {
-	fmt.Println("Listening to port 8080")
-	log.Fatal(http.ListenAndServe(addr, server.Router))
+	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"})
+	origins := handlers.AllowedOrigins([]string{"*"})
+	log.Fatal(http.ListenAndServe(addr, handlers.CORS(headers, methods, origins)(server.Router)))
+
+	fmt.Println("Listening to port 8081")
 }
