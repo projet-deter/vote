@@ -46,7 +46,6 @@ func (server *Server) Login(w http.ResponseWriter, r *http.Request) {
 		User_actif   models.User
 		Access_token string
 	}
-
 	dataActif := data{
 		User_actif:   user,
 		Access_token: token,

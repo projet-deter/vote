@@ -32,15 +32,18 @@ var votes = []models.Vote{
 	models.Vote{
 		Title: "Vote 1",
 		Desc:  "Hello world 1",
+		// Like:    1,
+		// Dislike: 0,
 	},
 	models.Vote{
 		Title: "Vote 2",
 		Desc:  "Hello world 2",
+		// Like:    0,
+		// Dislike: 0,
 	},
 }
 
 func Load(db *gorm.DB) {
-
 	err := db.Debug().DropTableIfExists(&models.Vote{}, &models.User{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)

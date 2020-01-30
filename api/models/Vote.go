@@ -10,9 +10,11 @@ import (
 )
 
 type Vote struct {
-	ID       uint64 `gorm:"primary_key;auto_increment" json:"id"`
-	Title    string `gorm:"size:255;not null;unique" json:"title"`
-	Desc     string `gorm:"size:255;not null;" json:"desc"`
+	ID    uint64 `gorm:"primary_key;auto_increment" json:"id"`
+	Title string `gorm:"size:255;not null;unique" json:"title"`
+	Desc  string `gorm:"size:255;not null;" json:"desc"`
+	// Like     uint32 `json:"like"`
+	// Dislike  uint32 `json:"dislike"`
 	AuthorID uint32 `gorm:"not null" json:"author_id"`
 	Author   User   `json:"author"`
 }
@@ -21,12 +23,12 @@ func (p *Vote) Prepare() {
 	p.ID = 0
 	p.Title = html.EscapeString(strings.TrimSpace(p.Title))
 	p.Desc = html.EscapeString(strings.TrimSpace(p.Desc))
+	// p.Like = 0
+	// p.Dislike = 0
 	p.Author = User{}
-
 }
 
 func (p *Vote) Validate() error {
-
 	if p.Title == "" {
 		return errors.New("Required Title")
 	}
@@ -88,7 +90,6 @@ func (p *Vote) FindVoteByID(db *gorm.DB, pid uint64) (*Vote, error) {
 }
 
 func (p *Vote) UpdateVote(db *gorm.DB, pid uint64) (*Vote, error) {
-
 	var err error
 	db = db.Debug().Model(&Vote{}).Where("id = ?", pid).Take(&Vote{}).UpdateColumns(
 		map[string]interface{}{
@@ -110,16 +111,13 @@ func (p *Vote) UpdateVote(db *gorm.DB, pid uint64) (*Vote, error) {
 	return p, nil
 }
 
-func (p *Vote) DeleteVote(db *gorm.DB, pid uint64, uid uint32) (int64, error) {
-
+func (p *Vote) DeleteVote(db *gorm.DB, pid uint64, uid uint32) (int64, uint64, error) {
 	db = db.Debug().Model(&Vote{}).Where("id = ? and author_id = ?", pid, uid).Take(&Vote{}).Delete(&Vote{})
-
 	if db.Error != nil {
 		if gorm.IsRecordNotFoundError(db.Error) {
-			return 0, errors.New("Vote not found")
+			return 0, 0, errors.New("Vote not found")
 		}
-		return 0, db.Error
+		return 0, 0, db.Error
 	}
-	return db.RowsAffected, nil
-
+	return db.RowsAffected, pid, nil
 }

@@ -117,7 +117,7 @@ func (server *Server) UpdateVote(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 		return
 	}
-	// Read the data 
+	// Read the data
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
@@ -156,7 +156,6 @@ func (server *Server) UpdateVote(w http.ResponseWriter, r *http.Request) {
 }
 
 func (server *Server) DeleteVote(w http.ResponseWriter, r *http.Request) {
-
 	vars := mux.Vars(r)
 
 	// Is a valid vote id given to us?
@@ -177,20 +176,29 @@ func (server *Server) DeleteVote(w http.ResponseWriter, r *http.Request) {
 	vote := models.Vote{}
 	err = server.DB.Debug().Model(models.Vote{}).Where("id = ?", pid).Take(&vote).Error
 	if err != nil {
-		responses.ERROR(w, http.StatusNotFound, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusNotFound, errors.New("Vote Not Found"))
 		return
 	}
 
 	// Is the authenticated user, the owner of this vote?
 	if uid != vote.AuthorID {
-		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized Author"))
 		return
 	}
-	_, err = vote.DeleteVote(server.DB, pid, uid)
+	_, pid, err = vote.DeleteVote(server.DB, pid, uid)
 	if err != nil {
 		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
+
 	w.Header().Set("Entity", fmt.Sprintf("%d", pid))
-	responses.JSON(w, http.StatusNoContent, "")
+
+	type data struct {
+		ID_vote uint64
+	}
+	dataActif := data{
+		ID_vote: pid,
+	}
+
+	responses.JSON(w, http.StatusOK, dataActif)
 }
